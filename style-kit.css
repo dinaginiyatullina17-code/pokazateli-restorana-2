@@ -1,0 +1,589 @@
+/* ════════════════════════════════════════════════════════════════════════
+   E-LEARNING KIT — переиспользуемые стили для интерактивных курсов-лонгридов
+   ────────────────────────────────────────────────────────────────────────
+   Извлечено из курса «Гостемания». Без зависимостей (чистый CSS).
+   Все цвета и шрифты вынесены в CSS-переменные (:root) — перекрась один раз
+   и весь кит подстроится под фирстиль нового проекта.
+
+   СОДЕРЖАНИЕ
+     0.  Переменные темы (:root)
+     1.  База (reset, типографика)
+     2.  SPA-страницы (.page)
+     3.  Анимация появления по скроллу (.fade-in)
+     4.  Верхняя навигация + прогресс-бар
+     5.  Контентная обёртка (.content-wrap)
+     6.  Кнопки (.btn-*)
+     7.  Карточки-главы с последовательной разблокировкой (.chapter-card)
+     8.  Карточки-разделы (.hub-card) — locked / done
+     9.  «Фичекарточки» равной высоты (.feature-card)
+     10. Таблицы данных (.data-table)
+     11. Галерея / карусель (.gallery-*)
+     12. Интерактив: сортировка списка (.sortable-list)
+     13. Интерактив: два контейнера drag-and-drop (.drag-chip / .drop-zone)
+     14. Интерактив: выбор варианта (.match-*)
+     15. Блок обратной связи (.feedback-box)
+     16. Аккордеон FAQ (.faq-*)
+     17. Слот изображения с фолбэком (.img-slot)
+     18. Видео / аудио (embed)
+     19. Заметки на полях / маргиналии (.marginal-note)
+     20. Диалоги и «пузыри речи» (.speech-* / .dialogue-*)
+     21. Выноски (.callout)
+     22. Модальное окно (.modal-*)
+   ════════════════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   0. ПЕРЕМЕННЫЕ ТЕМЫ
+   Меняешь здесь — меняется везде. Это главная точка кастомизации кита.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Палитра. Названия семантические, чтобы код не зависел от конкретного цвета */
+  --c-brand:     #FF8732;   /* основной акцент (кнопки, ссылки, активные элементы) */
+  --c-brand-dk:  #D62300;   /* акцент при наведении / нажатии */
+  --c-success:   #198737;   /* «верно», пройдено */
+  --c-warning:   #FFAA00;   /* предупреждение, второстепенный акцент */
+  --c-danger:    #D62300;   /* «неверно», ошибка */
+  --c-ink:       #502314;   /* основной цвет текста */
+  --c-cream:     #F5EBDC;   /* мягкий фон карточек/блоков */
+  --c-paper:     #ffffff;   /* фон страницы */
+  --c-muted:     #E8E0D3;   /* нейтральные разделители/рамки */
+
+  /* Шрифты. Подключи свои @font-face или Google Fonts и поменяй имена здесь */
+  --font-head:   'Flame', 'Roboto', sans-serif;  /* заголовки/акценты */
+  --font-body:   'Roboto', system-ui, sans-serif; /* основной текст */
+
+  /* Геометрия — единый «язык» скруглений и ширины контента */
+  --radius-sm:   10px;
+  --radius:      16px;
+  --radius-lg:   20px;
+  --content-max: 760px;     /* макс. ширина читаемой колонки */
+  --shadow:      0 4px 20px rgba(0,0,0,0.12);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   1. БАЗА
+   ════════════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--c-ink);
+  background: var(--c-paper);
+  margin: 0;
+}
+
+/* Заголовки набираем акцидентным шрифтом */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-head);
+  font-weight: 700;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   2. SPA-СТРАНИЦЫ
+   Весь курс — один HTML-файл. Каждая «страница» — <div class="page">.
+   Активная получает класс .active (показана), остальные скрыты.
+   Переключение делает JS-функция navigateTo() (см. elearning-kit.js).
+   ════════════════════════════════════════════════════════════════════════ */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   3. ПОЯВЛЕНИЕ ПО СКРОЛЛУ
+   Любой блок с .fade-in изначально прозрачен и смещён вниз.
+   IntersectionObserver добавляет .visible, когда блок входит во вьюпорт.
+   ════════════════════════════════════════════════════════════════════════ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   4. ВЕРХНЯЯ НАВИГАЦИЯ + ПРОГРЕСС-БАР
+   Фиксированная шапка: кнопка «домой», название главы, счётчик «X / N».
+   Полоска прогресса внизу шапки заполняется по мере продвижения.
+   ════════════════════════════════════════════════════════════════════════ */
+#top-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: var(--c-paper);
+  box-shadow: 0 1px 0 var(--c-cream);
+}
+.nav-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.nav-home-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer;
+  color: var(--c-ink);
+  font-family: var(--font-body); font-size: 14px; font-weight: 500;
+  transition: color 0.2s; padding: 0;
+}
+.nav-home-btn:hover { color: var(--c-brand); }
+#nav-chapter {
+  font-family: var(--font-head); font-size: 14px;
+  color: var(--c-ink); opacity: 0.7; text-align: center; flex: 1;
+}
+#nav-progress { font-size: 13px; color: var(--c-ink); opacity: 0.5; white-space: nowrap; }
+#progress-bar-wrap { height: 3px; background: var(--c-cream); }
+#progress-bar {
+  height: 3px; width: 0%;
+  background: var(--c-brand);
+  transition: width 0.5s ease;
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   5. КОНТЕНТНАЯ ОБЁРТКА
+   Центрирует читаемую колонку и задаёт вертикальные отступы.
+   ════════════════════════════════════════════════════════════════════════ */
+.content-wrap {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+.body-text p { font-size: 17px; line-height: 1.65; margin: 0 0 16px; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   6. КНОПКИ
+   .btn-next      — основное действие «Далее» (акцентная, акцидентный шрифт)
+   .btn-secondary — второстепенное действие (контурная)
+   .btn-check     — «Проверить» в интерактивах (зелёная)
+   .btn-download  — кнопка-ссылка для скачивания файла
+   ════════════════════════════════════════════════════════════════════════ */
+.btn-next {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--c-brand); color: #fff; border: none;
+  border-radius: 12px; padding: 14px 32px;
+  font-family: var(--font-head); font-size: 18px; cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-next:hover { background: var(--c-brand-dk); box-shadow: 0 4px 16px rgba(214,35,0,0.25); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--c-cream); color: var(--c-ink);
+  border: 2px solid var(--c-brand); border-radius: 12px; padding: 10px 24px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 500; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-secondary:hover { background: #FFE8C8; }
+
+.btn-check {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--c-success); color: #fff; border: none;
+  border-radius: var(--radius-sm); padding: 12px 28px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 700; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-check:hover { background: #126128; }
+.btn-check:disabled { background: #ccc; cursor: default; }
+
+.btn-download {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--c-cream); color: var(--c-ink);
+  border-radius: var(--radius-sm); padding: 12px 20px;
+  font-size: 15px; font-weight: 500; text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-download:hover { background: #EADFCB; }
+
+/* Ряд с кнопкой «Далее»: по центру колонки */
+.next-row { margin-top: 56px; display: flex; justify-content: center; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   7. КАРТОЧКИ-ГЛАВЫ С ПОСЛЕДОВАТЕЛЬНОЙ РАЗБЛОКИРОВКОЙ
+   Оглавление курса. Главы открываются по очереди: класс .locked делает
+   карточку серой и некликабельной, бейдж-замок виден ТОЛЬКО при .locked.
+   Снимает/ставит .locked — JS (applyHomeLocks).
+   ════════════════════════════════════════════════════════════════════════ */
+.chapter-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px;
+}
+@media (max-width: 600px) { .chapter-grid { grid-template-columns: 1fr; } }
+
+.chapter-card {
+  position: relative;
+  border: 2px solid var(--c-cream); border-radius: var(--radius);
+  padding: 24px; cursor: pointer;
+  display: flex; align-items: flex-start; gap: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.3s;
+}
+.chapter-card:hover { border-color: var(--c-brand); box-shadow: 0 4px 20px rgba(255,135,50,0.15); }
+.chapter-card.full-width { grid-column: 1 / -1; }       /* карточка на всю ширину */
+.chapter-card.locked { opacity: 0.5; pointer-events: none; filter: grayscale(0.4); }
+
+/* Номер главы — цветной квадрат (цвет задаётся инлайн в разметке) */
+.chapter-num {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-size: 22px; color: #fff;
+}
+.chapter-card h3 { font-size: 17px; margin: 0 0 4px; transition: color 0.2s; }
+.chapter-card:hover h3 { color: var(--c-brand); }
+.chapter-card p { font-size: 13px; opacity: 0.55; margin: 0; }
+
+/* Бейдж-замок: скрыт по умолчанию, виден только когда глава заблокирована */
+.chapter-card .chapter-lock {
+  position: absolute; top: 12px; right: 12px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #B7AFA2;
+  display: none; align-items: center; justify-content: center;
+}
+.chapter-card.locked .chapter-lock { display: flex; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   8. КАРТОЧКИ-РАЗДЕЛЫ (хаб с подразделами)
+   То же, что главы, но внутри одной главы. Поддерживают два состояния:
+   .locked (недоступен) и .done (пройден, зелёная рамка + галочка).
+   ВАЖНО: замок показываем ТОЛЬКО при .locked, галочку — ТОЛЬКО при .done.
+   ════════════════════════════════════════════════════════════════════════ */
+.hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 600px) { .hub-grid { grid-template-columns: 1fr; } }
+
+.hub-card {
+  position: relative;
+  border: 2px solid var(--c-cream); border-radius: var(--radius);
+  padding: 24px 16px; text-align: center; cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.3s;
+}
+.hub-card:hover:not(.locked) { border-color: var(--c-brand); box-shadow: 0 4px 20px rgba(255,135,50,0.15); }
+.hub-card.locked { opacity: 0.45; pointer-events: none; filter: grayscale(0.5); }
+.hub-card.done { border-color: var(--c-success); background: #F0FBF3; }
+.hub-card .hub-icon {
+  width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.hub-card h3 { font-size: 16px; margin: 0 0 6px; }
+.hub-card p { font-size: 13px; opacity: 0.6; margin: 0; }
+
+.hub-card .lock-badge,
+.hub-card .done-badge {
+  position: absolute; top: 12px; right: 12px;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: none; align-items: center; justify-content: center;
+}
+.hub-card .lock-badge { background: #ccc; }
+.hub-card .done-badge { background: var(--c-success); }
+.hub-card.locked .lock-badge { display: flex; }   /* замок только когда заблокировано */
+.hub-card.done   .done-badge { display: flex; }    /* галочка только когда пройдено */
+.hub-card.done   .lock-badge { display: none; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   9. «ФИЧЕКАРТОЧКИ» РАВНОЙ ВЫСОТЫ
+   Ряд одинаковых карточек (напр. «ты / гость / компания»).
+   Хитрости равенства:
+     • minmax(0,1fr) — колонки не растягиваются под длинное слово;
+     • align-items: stretch + height:100% — одинаковая высота;
+     • .card-sub { flex:1 } — подпись добирает остаток, низ ровный.
+   ════════════════════════════════════════════════════════════════════════ */
+.cards-row {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px; align-items: stretch;
+}
+@media (max-width: 760px) { .cards-row { grid-template-columns: 1fr; } }
+
+.feature-card {
+  height: 100%;
+  background: var(--c-cream); border-radius: var(--radius);
+  padding: 28px 20px 20px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 12px;
+}
+.card-big-word {
+  font-family: var(--font-head); font-size: clamp(24px, 4vw, 52px);
+  color: var(--c-brand); line-height: 1;
+  min-height: 52px; display: flex; align-items: center;
+  white-space: nowrap;   /* длинное слово не переносится посреди */
+}
+.card-sub { flex: 1; font-size: 14px; opacity: 0.75; line-height: 1.5; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   10. ТАБЛИЦЫ ДАННЫХ
+   Оборачивай в <div style="overflow-x:auto"> для горизонтального скролла
+   на узких экранах.
+   ════════════════════════════════════════════════════════════════════════ */
+.data-table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.data-table th, .data-table td {
+  border: 1px solid var(--c-cream); padding: 12px 14px; text-align: left; vertical-align: top;
+}
+.data-table th { background: var(--c-cream); font-family: var(--font-head); }
+.data-table tr:nth-child(even) td { background: #FCF8F1; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   11. ГАЛЕРЕЯ / КАРУСЕЛЬ
+   Лента слайдов сдвигается через transform: translateX(). Управление —
+   стрелки + точки. Логика в JS (galleryMove / renderGallery).
+   ════════════════════════════════════════════════════════════════════════ */
+.gallery-wrap { position: relative; overflow: hidden; border-radius: var(--radius); }
+.gallery-track { display: flex; transition: transform 0.4s ease; }
+.gallery-slide { min-width: 100%; }       /* один слайд = 100% ширины окна */
+.gallery-controls { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; }
+.gallery-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 2px solid var(--c-brand); background: #fff; color: var(--c-brand);
+  cursor: pointer; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+.gallery-btn:hover { background: var(--c-brand); color: #fff; }
+.gallery-dots { display: flex; gap: 6px; }
+.gallery-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-cream); cursor: pointer; transition: background 0.2s; }
+.gallery-dot.active { background: var(--c-brand); }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   12. ИНТЕРАКТИВ: СОРТИРОВКА СПИСКА (drag-and-drop по вертикали)
+   Перетаскивание элементов списка для расстановки в правильном порядке.
+   Каждому элементу нужен data-idx — по нему JS проверяет порядок.
+   ════════════════════════════════════════════════════════════════════════ */
+.sortable-list { display: flex; flex-direction: column; gap: 10px; }
+.sort-item {
+  display: flex; align-items: center; gap: 12px;
+  background: #fff; border: 2px solid var(--c-cream); border-radius: 12px;
+  padding: 14px 16px; cursor: grab; font-size: 15px;
+  transition: border-color 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+.sort-item:hover { border-color: var(--c-brand); }
+.sort-item.dragging { opacity: 0.4; }                      /* перетаскиваемый */
+.sort-item.drag-over-top    { box-shadow: 0 -3px 0 var(--c-brand); }  /* индикатор вставки сверху */
+.sort-item.drag-over-bottom { box-shadow: 0  3px 0 var(--c-brand); }  /* …снизу */
+.sort-handle { color: var(--c-brand); flex-shrink: 0; display: flex; } /* «ручка» */
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   13. ИНТЕРАКТИВ: ДВА КОНТЕЙНЕРА DRAG-AND-DROP
+   Чипы (.drag-chip) из пула перетаскиваются в две зоны (.drop-zone).
+   У чипа должен быть data-key — по нему JS проверяет распределение.
+   Поддержка тача — через клон, следующий за пальцем (см. JS).
+   ════════════════════════════════════════════════════════════════════════ */
+.zone-pool {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  padding: 14px; background: #fff; border-radius: 12px; min-height: 56px;
+}
+.drag-chip {
+  background: var(--c-brand); color: #fff;
+  border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: grab;
+  user-select: none; touch-action: none;   /* важно для тач-драга */
+  transition: transform 0.15s, opacity 0.15s;
+}
+.drag-chip.dragging { opacity: 0.5; }
+.drop-zones-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 520px) { .drop-zones-row { grid-template-columns: 1fr; } }
+.drop-zone-label { font-weight: 700; font-size: 13px; margin-bottom: 6px; }
+.drop-zone {
+  min-height: 80px; padding: 12px; border-radius: 12px;
+  background: var(--c-cream); border: 2px dashed transparent;
+  display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start;
+  transition: border-color 0.15s, background 0.15s;
+}
+.drop-zone.drag-over { border-color: var(--c-brand); background: #FFF1E2; }  /* подсветка цели */
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   14. ИНТЕРАКТИВ: ВЫБОР ВАРИАНТА (matching / викторина)
+   Кнопки-варианты; правильная подсвечивается зелёным, неверная «мигает».
+   ════════════════════════════════════════════════════════════════════════ */
+.match-question { margin-bottom: 18px; }
+.match-question.solved { opacity: 0.85; }
+.match-options, .answer-choices { display: flex; flex-direction: column; gap: 8px; }
+.match-btn, .answer-btn {
+  text-align: left; background: #fff;
+  border: 2px solid var(--c-cream); border-radius: 12px;
+  padding: 12px 16px; font-size: 15px; cursor: pointer; color: var(--c-ink);
+  transition: border-color 0.15s, background 0.15s;
+}
+.match-btn:hover:not(:disabled), .answer-btn:hover:not(:disabled) { border-color: var(--c-brand); }
+.match-btn:disabled, .answer-btn:disabled { cursor: default; }
+.correct-pick, .answer-btn.correct { border-color: var(--c-success); background: #F0FBF3; }
+/* «Мигание» при неверном ответе */
+.wrong-pick, .answer-btn.wrong { animation: kit-shake 0.4s; border-color: var(--c-danger); }
+@keyframes kit-shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   15. БЛОК ОБРАТНОЙ СВЯЗИ
+   Появляется после проверки. .correct — зелёный, .incorrect — красный.
+   JS подставляет текст и переключает классы.
+   ════════════════════════════════════════════════════════════════════════ */
+.feedback-box {
+  display: none; margin-top: 16px;
+  border-radius: 14px; padding: 14px 16px; font-size: 15px; line-height: 1.5;
+}
+.feedback-box.show { display: block; }
+.feedback-box.correct   { background: #F0FBF3; border: 1px solid var(--c-success); }
+.feedback-box.incorrect { background: #FDF1EF; border: 1px solid var(--c-danger); }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   16. АККОРДЕОН FAQ
+   Раскрытие через max-height-переход (работает без JS-измерений высоты).
+   Класс .open ставится одновременно на кнопку и тело (см. toggleFaq).
+   ════════════════════════════════════════════════════════════════════════ */
+.faq-item { border-bottom: 1px solid var(--c-cream); }
+.faq-q {
+  width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 16px 0; font-size: 16px; font-weight: 500; color: var(--c-ink);
+}
+.faq-q svg { transition: transform 0.25s; flex-shrink: 0; }
+.faq-q.open svg { transform: rotate(180deg); }
+.faq-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-body.open { max-height: 800px; }       /* «достаточно большое» значение */
+.faq-body-inner { padding: 0 0 16px; font-size: 15px; line-height: 1.6; opacity: 0.85; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   17. СЛОТ ИЗОБРАЖЕНИЯ С ФОЛБЭКОМ
+   Если картинка не загрузилась — показывается подпись-заглушка (.img-label).
+   В разметке: <img ... onerror="this.style.display='none'"> + соседний .img-label.
+   Для инфографик используем object-fit: contain (показываем целиком).
+   ════════════════════════════════════════════════════════════════════════ */
+.img-slot { position: relative; background: var(--c-cream); border-radius: var(--radius); overflow: hidden; }
+.img-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-slot.infographic-slot { min-height: 200px; }
+.img-slot.infographic-slot img { height: auto; object-fit: contain; }  /* инфографику не обрезаем */
+.img-label {
+  position: absolute; inset: 0; pointer-events: none; padding: 12px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  font-size: 12px; opacity: 0.45; text-align: center;
+}
+.img-slot img[src]:not([src=""]) + .img-label { display: none; } /* прячем подпись, если картинка есть */
+
+/* Адаптация под горизонтальный режим телефона: ничего не обрезаем, ограничиваем высоту */
+@media (orientation: landscape) and (max-height: 600px) {
+  .img-slot.infographic-slot img { max-height: 78vh; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   18. ВИДЕО / АУДИО
+   Адаптивная обёртка 16:9 для <iframe> (YouTube/Vimeo/PeerTube) или <video>.
+   ════════════════════════════════════════════════════════════════════════ */
+.video-wrap { border-radius: 12px; overflow: hidden; background: #111; }
+.video-embed { width: 100%; display: block; min-height: 180px; }
+/* Обёртка фикс. соотношения: <div class="ratio-16x9"><iframe ...></iframe></div> */
+.ratio-16x9 { position: relative; padding-top: 56.25%; }
+.ratio-16x9 > iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.audio-embed { width: 100%; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   19. ЗАМЕТКИ НА ПОЛЯХ (маргиналии)
+   На десктопе — узкая колонка справа от основного блока (через .with-margin).
+   На мобильном — переносится вниз. Нейтральный вид (без цветной подложки).
+   ════════════════════════════════════════════════════════════════════════ */
+.with-margin { display: flex; flex-direction: column; gap: 20px; align-items: stretch; }
+@media (min-width: 880px) {
+  .with-margin { flex-direction: row; align-items: flex-start; gap: 28px; }
+  .with-margin > :first-child { flex: 1; min-width: 0; }      /* основной контент */
+  .with-margin > .marginal-note { width: 140px; flex-shrink: 0; }
+  /* Float-вариант — когда заметку нужно вставить внутрь длинного блока */
+  .marginal-note--float { float: right; clear: right; width: 140px; margin: 0 0 20px 24px; }
+}
+.marginal-note {
+  background: transparent;
+  border-left: 2px solid var(--c-muted);   /* нейтральный отделитель */
+  padding: 4px 0 4px 14px;
+}
+.marginal-note__eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--c-brand); margin: 0 0 5px; }
+.marginal-note__title { font-family: var(--font-head); font-size: 15px; margin: 0 0 8px; line-height: 1.2; }
+.marginal-note__text { font-size: 12px; line-height: 1.55; opacity: 0.72; margin: 0; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   20. ДИАЛОГИ И «ПУЗЫРИ РЕЧИ»
+   Вопрос — пузырь слева с аватаром; ответ — пузырь справа (акцентный фон).
+   Удобно для имитации диалога «сотрудник ↔ наставник».
+   ════════════════════════════════════════════════════════════════════════ */
+.speech-wrap { display: flex; align-items: flex-start; gap: 12px; }
+.speech-avatar {
+  width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+  background: var(--c-cream); font-size: 10px; text-align: center;
+  display: flex; align-items: center; justify-content: center;
+}
+.speech-bubble {
+  background: var(--c-cream); border-radius: 16px 16px 16px 4px;
+  padding: 12px 16px; font-size: 15px; line-height: 1.5;
+}
+.speech-wrap-reply { display: flex; justify-content: flex-end; }
+.speech-bubble-reply {
+  background: var(--c-brand); color: #fff;
+  border-radius: 16px 16px 4px 16px;
+  padding: 12px 16px; font-size: 15px; line-height: 1.5; max-width: 85%; white-space: pre-line;
+}
+
+/* Разбор диалога по шагам (напр. буквы алгоритма) */
+.dialogue-line { display: flex; gap: 12px; align-items: flex-start; padding: 6px 0; }
+.dialogue-line.highlight { background: #FFF6EC; border-radius: 10px; padding: 8px 12px; }
+.dialogue-badge {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  background: var(--c-brand); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-size: 14px;
+}
+.dialogue-badge.guest { background: #9C8A78; }
+.dialogue-speaker { font-size: 12px; font-weight: 700; opacity: 0.6; }
+.dialogue-text { font-size: 15px; line-height: 1.5; }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   21. ВЫНОСКИ
+   Акцентные блоки «Важно / Главное». Цвет полосы слева — по смыслу.
+   ════════════════════════════════════════════════════════════════════════ */
+.callout {
+  background: var(--c-cream); border-left: 4px solid var(--c-brand);
+  border-radius: 0 12px 12px 0; padding: 16px 18px; font-size: 15px; line-height: 1.55;
+}
+.callout.green { border-left-color: var(--c-success); }
+.callout.red   { border-left-color: var(--c-danger); }
+
+
+/* ════════════════════════════════════════════════════════════════════════
+   22. МОДАЛЬНОЕ ОКНО
+   Полупрозрачный оверлей + центрированная карточка. Открытие — класс .open.
+   Закрытие по клику на фон, крестик или Esc (см. JS).
+   ════════════════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(80,35,20,0.45);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  position: relative; width: 100%; max-width: 400px;
+  background: #fff; border-radius: var(--radius-lg);
+  padding: 32px 28px 28px; box-shadow: 0 16px 48px rgba(0,0,0,0.28);
+}
+.modal__close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; line-height: 1; color: var(--c-ink); opacity: 0.45; padding: 4px;
+  transition: opacity 0.15s;
+}
+.modal__close:hover { opacity: 1; }
