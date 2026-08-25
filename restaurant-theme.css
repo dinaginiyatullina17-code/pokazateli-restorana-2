@@ -99,6 +99,14 @@ input:focus-visible {
   box-shadow: var(--ku-shadow-xs);
 }
 
+#top-nav.home-hidden {
+  display: none;
+}
+
+#page-home {
+  padding-top: 0;
+}
+
 #progress-bar {
   background: var(--ku-grad-brand);
 }

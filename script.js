@@ -76,6 +76,7 @@ function navigateTo(pageId) {
   PAGES.forEach(id => document.getElementById('page-' + id)?.classList.remove('active'));
   const target = document.getElementById('page-' + pageId);
   if (!target) return;
+  document.getElementById('top-nav')?.classList.toggle('home-hidden', pageId === 'home');
   target.classList.add('active');
   currentPage = pageId;
   window.scrollTo({top:0, behavior:'instant'});
