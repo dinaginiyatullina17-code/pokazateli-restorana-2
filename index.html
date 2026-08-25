@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ru" data-audience="ms" data-direction="restoran">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#7968E8">
+  <meta name="description" content="Интерактивный курс для менеджеров смены о выручке, затратах, прибыли и производительности ресторана.">
+  <title>Показатели ресторана</title>
+  <link rel="stylesheet" href="css/kuds.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="restaurant-theme.css">
+</head>
+<body>
+  <nav id="top-nav" aria-label="Навигация по курсу">
+    <div class="nav-inner">
+      <button class="nav-home-btn" type="button" onclick="navigateTo('home')" aria-label="Вернуться к содержанию">
+        <span aria-hidden="true">⌂</span> Содержание
+      </button>
+      <span id="nav-chapter" aria-live="polite"></span>
+      <span id="nav-progress" aria-label="Прогресс по главам"></span>
+    </div>
+    <div id="progress-bar-wrap"><div id="progress-bar"></div></div>
+  </nav>
+
+  <div id="course-notice" class="course-notice" role="alert" aria-live="assertive"></div>
+
+  <main>
+    <div class="page active" id="page-home">
+      <section class="hero-placeholder" aria-label="Место для будущего Hero-фото">
+        <div class="hero-grain"></div>
+        <div class="hero-orbit orbit-one"></div>
+        <div class="hero-orbit orbit-two"></div>
+        <div class="hero-content">
+          <span class="eyebrow light">Для управляющих сменой</span>
+          <h1>Показатели<br>ресторана</h1>
+          <p>От цифр в Brave&amp;Bold — к решениям на смене</p>
+          <span class="hero-photo-note">Здесь будет Hero-фото</span>
+        </div>
+        <div class="hero-metric metric-a"><strong>3:10</strong><span>цель SOS</span></div>
+        <div class="hero-metric metric-b"><strong>100%</strong><span>комплектность</span></div>
+        <div class="hero-metric metric-c"><strong>ITPH</strong><span>нагрузка команды</span></div>
+      </section>
+
+      <div class="content-wrap home-content">
+        <section class="intro-panel intro-pains fade-in">
+          <span class="eyebrow">Знакомая смена?</span>
+          <h2>Когда всё меняется быстрее плана</h2>
+          <div class="pain-grid">
+            <article><span>01</span><p>Выручка ниже цели — что делать в первую очередь?</p></article>
+            <article><span>02</span><p>Команда перегружена, скорость падает — кого и куда переставить?</p></article>
+            <article><span>03</span><p>Заготовок слишком мало или много — довериться системе или вмешаться?</p></article>
+          </div>
+          <p class="pain-resolution">Показатели помогают заменить догадки фактами: увидеть причину, выбрать действие и не потерять контроль над сменой.</p>
+        </section>
+
+        <section class="course-map fade-in" aria-labelledby="course-map-title">
+          <div class="course-duration" id="course-map-title">
+            <div><span>Время прохождения</span><small>6 коротких модулей</small></div>
+            <strong>15 минут</strong>
+          </div>
+          <div class="chapter-grid">
+            <button class="chapter-card" id="home-card-1" type="button" onclick="navigateTo('income')">
+              <span class="chapter-num">01</span><span class="chapter-meta">Доходы</span><strong>Доходы ресторана</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+            <button class="chapter-card" id="home-card-2" type="button" onclick="navigateTo('revenue')">
+              <span class="chapter-num">02</span><span class="chapter-meta">Выручка</span><strong>С помощью каких показателей ты влияешь на выручку</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+            <button class="chapter-card" id="home-card-3" type="button" onclick="navigateTo('costs')">
+              <span class="chapter-num">03</span><span class="chapter-meta">Затраты</span><strong>Виды затрат ресторана</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+            <button class="chapter-card" id="home-card-4" type="button" onclick="navigateTo('profit')">
+              <span class="chapter-num">04</span><span class="chapter-meta">Результат</span><strong>Основной показатель эффективности работы ресторана</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+            <button class="chapter-card" id="home-card-5" type="button" onclick="navigateTo('productivity')">
+              <span class="chapter-num">05</span><span class="chapter-meta">Команда</span><strong>Производительность труда</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+            <button class="chapter-card" id="home-card-6" type="button" onclick="navigateTo('summary')">
+              <span class="chapter-num">06</span><span class="chapter-meta">Итог</span><strong>Главное по теме</strong><span class="card-arrow">→</span><span class="lock-badge">●</span>
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="page" id="page-income">
+      <header class="chapter-hero chapter-green">
+        <div class="chapter-hero-inner"><span class="chapter-index">01 / 06</span><h1>Доходы<br>ресторана</h1><p>Откуда появляется выручка и где видеть цель</p></div>
+      </header>
+      <div class="content-wrap">
+        <section class="definition-card revenue-definition fade-in">
+          <span>Выручка = товарооборот</span>
+          <p>Выручка — доход ресторана: все оплаты заказов, которые внесли Гости.</p>
+          <div class="payment-strip" aria-label="Способы оплаты заказов"><span>Наличные</span><span>Банковские карты</span><span>Баллы “Спасибо”</span><span>Короны</span></div>
+        </section>
+
+        <section class="lesson-block fade-in">
+          <p>Выручку ресторан получает через каналы продаж. Это способы, с помощью которых Гость делает у нас заказ и оплачивает его.</p>
+          
+          <ul class="channel-bullets" aria-label="Семь каналов продаж">
+            <li>Киоски</li><li>Мобильное приложение</li><li>Собственная доставка</li><li>Агрегаторы</li><li>Касса</li><li>Кинг Авто</li><li>Другие Digital-каналы</li>
+          </ul>
+        </section>
+
+        <details class="fact-reveal fade-in">
+          <summary><span>Интересный факт</span><strong>Почему Digital особенно важен?</strong><i>Раскрыть</i></summary>
+          <div class="fact-visual" id="digital-fact">
+            <div class="fact-stat"><strong>5 из 6</strong><span>Гостей в 2023 году заказывали через Digital-каналы</span></div>
+            <div class="fact-flow" aria-label="Путь от онлайн-заказа к повторному визиту">
+              <div><b>01</b><span>Онлайн-заказ</span></div><i>→</i><div><b>02</b><span>Качество и скорость</span></div><i>→</i><div><b>03</b><span>Гость возвращается</span></div>
+            </div>
+            <p>Поэтому контролируй весь путь продукта: от приёма поставки до вручения готового заказа Гостю.</p>
+          </div>
+        </details>
+
+        <section class="lesson-block fade-in">
+
+          <p class="strong-lead">Выручку ты видишь в Brave&amp;Bold. Там показана финансовая и оперативная выручка, а также видно, достигает ли ресторан цели.</p>
+          <aside class="brave-course-note" aria-label="Информация о следующем курсе">
+            <span>Следующий курс</span>
+            <div><strong>Подробнее о Brave&amp;Bold</strong><p>Как работать с программой и анализировать показатели, ты узнаешь в следующем курсе.</p></div>
+          </aside>
+          <div class="compare-grid">
+            <article class="metric-card"><span class="metric-label">Финансовая</span><p>Финансовая выручка — показатель, который рассчитывают аналитики и утверждает руководство компании.</p></article>
+            <article class="metric-card accent"><span class="metric-label">Оперативная</span><p>Оперативная выручка — товарооборот, который рассчитывает директор ресторана на основе прошлых продаж и текущей ситуации.</p></article>
+          </div>
+        </section>
+
+        <figure class="report-figure fade-in">
+          <figcaption><span>Заглушка</span> Финансовая и оперативная выручка в Brave&amp;Bold</figcaption>
+          <div class="report-placeholder" role="img" aria-label="Заглушка для будущего изображения финансовой и оперативной выручки"><span>Изображение будет обновлено</span><strong>Финансовая и оперативная выручка</strong><small>Здесь появится новый фрагмент Brave&amp;Bold</small></div>
+        </figure>
+
+        <section class="action-card fade-in">
+          <span class="action-icon" aria-hidden="true">?</span>
+          <p><strong>К 18:00 ресторан отстаёт от цели по выручке. До конца дня ещё четыре часа.</strong> Какое решение управляющего будет наиболее обоснованным?</p>
+          <div class="binary-choice" data-choice-group>
+            <button type="button" onclick="answerChoice(this, true, 'income-feedback', 'Верно! Сначала нужно понять источник отклонения, а затем выбрать действие, на которое команда может повлиять до конца смены.')">Сравнить динамику продаж с целью, определить причину отклонения и задать команде фокус на оставшееся время</button>
+            <button type="button" onclick="answerChoice(this, false, 'income-feedback', '', 'Само ожидание не изменит результат. Пока смена продолжается, важно определить причину отклонения и выбрать конкретное действие.')">Дождаться закрытия дня: выводы можно делать только после завершения смены</button>
+            <button type="button" onclick="answerChoice(this, false, 'income-feedback', '', 'Снижение цели скроет отклонение, но не поможет ресторану улучшить результат. Нужны анализ причины и действие команды.')">Скорректировать цель до текущего прогноза, чтобы убрать отклонение</button>
+          </div>
+          <div class="feedback-box" id="income-feedback" aria-live="polite"></div>
+        </section>
+
+        <section class="lesson-block fade-in">
+          <p class="strong-lead">Твоя задача — ежедневно достигать цели по выручке на своей смене. Только тогда твой ресторан выполнит ежемесячный план.</p>
+          <p>Отслеживать выручку тебе также помогает PLS: система прогнозирует продажи, учитывает фактическую выручку и показывает, на сколько процентов ресторан идёт выше или ниже плана. При включённой автокорректировке PLS сама пересчитывает количество заготовок, а при необходимости процент и количество можно скорректировать вручную.</p>
+          <aside class="pls-teaser" aria-label="Заглушка для перехода к курсу по PLS">
+            <span>Следующий материал</span><div><h3>Курс по работе с PLS</h3><p>Прогноз, автокорректировка и ручные изменения.</p></div><strong>Ссылка появится позже</strong>
+          </aside>
+          <p>А сейчас разберемся, как ты можешь влиять на достижение цели по выручке.</p>
+        </section>
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('home')">К содержанию</button><button class="btn-next" type="button" onclick="navigateTo('revenue')">Следующая глава →</button></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-revenue">
+      <header class="chapter-hero chapter-orange">
+        <div class="chapter-hero-inner"><span class="chapter-index">02 / 06</span><h1>С помощью каких показателей<br>ты влияешь на выручку</h1><p>Трафик × средний чек</p></div>
+      </header>
+      <div class="content-wrap wide-content">
+        <section class="revenue-equation fade-in" aria-label="Формула выручки">
+          <div class="equation-main"><span>Выручка</span><small>= товарооборот</small></div><span class="equation-sign">=</span><div class="equation-part"><strong>Трафик</strong><small>количество Гостей</small></div><span class="equation-sign">×</span><div class="equation-part"><strong>Средний чек</strong><small>стоимость заказа</small></div>
+        </section>
+        <p class="lead fade-in">Выручка складывается из трафика и среднего чека.</p>
+        <p class="fade-in">Ты влияешь на оба показателя. Их тоже смотри в Brave&amp;Bold.</p>
+
+        <section class="metric-explorer fade-in" aria-labelledby="metric-explorer-title">
+          <div class="section-heading"><h2 id="metric-explorer-title">Раскрой показатель</h2><p>Нажимай на карточки, чтобы увидеть определение и управленческий фокус.</p></div>
+          <details class="metric-detail" open>
+            <summary><span>01</span> Выручка</summary>
+            <div class="detail-body">
+              <p>Товарооборот, или выручка, показывает доход Ресторана. То есть это все средства, которые Гости заплатили за заказы. Учитываются: наличные, банковские карты, баллы «Спасибо» и короны по карте Бургер Кинг. Где смотреть: в Brave&amp;Bold.</p>
+              <p class="focus-line">Сверяй фактическую выручку с целью в Brave&amp;Bold, а динамику по получасовым продажам — в PLS. Если есть отклонение, определи его источник — трафик или средний чек — и выбери действие для смены.</p>
+            </div>
+          </details>
+          <details class="metric-detail">
+            <summary><span>02</span> Трафик</summary>
+            <div class="detail-body">
+              <p>Трафик — это количество Гостей, которые сделали заказ. Показатель смотри в Brave&amp;Bold.</p>
+              <p class="focus-line">Чтобы Гости к нам возвращались, важно обеспечить качественный сервис, высокую скорость приготовления заказа, вкусные блюда, комфорт и безопасность пищи — то есть работать над Гостевым опытом.</p>
+            </div>
+          </details>
+          <details class="metric-detail">
+            <summary><span>03</span> Средний чек</summary>
+            <div class="detail-body">
+              <p>Средний чек — сумма, которую Гость в среднем платит за заказ. Он рассчитывается как выручка, разделённая на количество Гостей. Показатель смотри в Brave&amp;Bold.</p>
+              <p>Средний чек зависит от наполненности — количества позиций в заказе — и стоимости блюд. В Brave&amp;Bold количество проданных блюд показано в строке «Блюда», а наполненность — в строке «Количество блюд на чек».</p>
+              <p class="focus-line">Чтобы увеличить средний чек, определи нужный фокус продаж и организуй работу команды с помощью треугольника продаж, подсказки на опережение и активных продаж на кассе и в окнах Кинг Авто.</p>
+            </div>
+          </details>
+        </section>
+
+        <figure class="report-figure fade-in">
+          <figcaption><span>Заглушка</span> Продажи, трафик, средний чек и наполненность</figcaption>
+          <div class="report-placeholder" role="img" aria-label="Заглушка для будущего изображения продаж, трафика, среднего чека и наполненности"><span>Изображение будет обновлено</span><strong>Продажи, трафик, средний чек и наполненность</strong><small>Здесь появится новый фрагмент Brave&amp;Bold</small></div>
+        </figure>
+        <section class="action-card fade-in">
+          <span class="action-icon" aria-hidden="true">?</span><p><strong>Трафик не изменился, но выручка снизилась.</strong> Что нужно сделать управляющему в такой ситуации?</p>
+          <div class="binary-choice" data-choice-group>
+            <button type="button" onclick="answerChoice(this, true, 'average-check-feedback', 'Верно! При стабильном трафике причина находится в среднем чеке. После проверки его составляющих можно выбрать точный фокус для команды.')">Проверить наполненность и стоимость блюд в заказе, затем скорректировать фокус продаж</button>
+            <button type="button" onclick="answerChoice(this, false, 'average-check-feedback', '', 'Привлечение новых Гостей может помочь в будущем, но по условию трафик стабилен. Сначала разбери причину снижения среднего чека.')">Сразу направить все усилия на увеличение трафика</button>
+            <button type="button" onclick="answerChoice(this, false, 'average-check-feedback', '', 'Общее требование продавать больше не показывает команде, что именно нужно изменить. Сначала определи: просела наполненность или стоимость блюд.')">Попросить команду продавать больше без дополнительного анализа</button>
+          </div>
+          <div class="feedback-box" id="average-check-feedback" aria-live="polite"></div>
+        </section>
+
+        <section class="lesson-block fade-in">
+          <h2>Что помогает Гостям возвращаться</h2>
+          <p>Трафик растёт, когда новые Гости приходят, а постоянные возвращаются. Возвращаться им помогает хороший Гостевой опыт.</p>
+        </section>
+
+        <section class="experience-flow fade-in" aria-labelledby="experience-flow-title">
+          <div class="experience-flow-heading"><span>Пять факторов</span><h2 id="experience-flow-title">От действий на смене — к Гостевому опыту</h2></div>
+          <div class="experience-factors" id="guest-factors">
+            <article><span class="factor-dot"></span><h3>Локальный маркетинг</h3><p>Ты организуешь работу промоутеров и помогаешь команде превратить визит по акции в желание вернуться.</p></article>
+            <article><span class="factor-dot"></span><h3>Скорость</h3><p>Ты управляешь расстановкой, заготовками, обратной связью и обучением команды.</p></article>
+            <article><span class="factor-dot"></span><h3>Качество блюд</h3><p>Ты контролируешь приготовление и сборку: быстро — не значит в ущерб качеству.</p></article>
+            <article><span class="factor-dot"></span><h3>Гостеприимство</h3><p>Ты задаёшь стандарт общения и даёшь команде обратную связь.</p></article>
+            <article><span class="factor-dot"></span><h3>Комфорт и безопасность</h3><p>Ты контролируешь чистоту, комфорт в ресторане и безопасность пищи.</p></article>
+          </div>
+          <div class="experience-result-arrow" aria-hidden="true">↓</div>
+          <div class="guest-experience">
+            <span>Общий результат</span><h3>Гостевой опыт</h3>
+            <p>Эти факторы формируют впечатление от ресторана. Чем лучше Гостевой опыт, тем больше лояльных Гостей возвращается и тем выше трафик.</p>
+          </div>
+          <section class="bonus-impact" aria-labelledby="bonus-impact-title">
+            <div class="bonus-impact-heading"><span>Почему это важно для тебя</span><div><h3 id="bonus-impact-title">Общий результат влияет и на твой результат</h3><p>Гостевой опыт важен не только для возвращения Гостей и трафика. Выполнение цели по этому показателю учитывается и в премии управляющего сменой.</p></div></div>
+            <div class="bonus-impact-flow">
+              <article><b>01</b><strong>Гостевой опыт</strong><small>Пять факторов складываются в общий результат ресторана</small></article>
+              <i aria-hidden="true">→</i>
+              <article><b>02</b><strong>Цель выполнена</strong><small>Ресторан достигает цели по Гостевому опыту</small></article>
+              <i aria-hidden="true">→</i>
+              <article class="bonus-result"><b>03</b><strong>Влияние на премию</strong><small>Выполнение цели напрямую влияет на твою премию</small></article>
+            </div>
+          </section>
+        </section>
+
+        <section class="lesson-block fade-in">
+          <h2>Как следить за Гостевым опытом</h2>
+          <p>Отдельная программа показывает, как у ресторана обстоят дела с Гостевым опытом и что стоит улучшить. Ключевые данные смотри в Brave&amp;Bold. Даже если негативных отзывов нет, продолжай контролировать качество блюд, сборку заказов и чистоту.</p>
+          <aside class="pls-teaser guest-course-teaser" aria-label="Заглушка для перехода к курсу по программе Гостевой опыт">
+            <span>Отдельный курс</span><div><h3>Работа с программой «Гостевой опыт»</h3><p>Как читать результаты и превращать обратную связь Гостей в действия команды.</p></div><strong>Ссылка появится позже</strong>
+          </aside>
+        </section>
+
+        <section class="sos-intro fade-in">
+          <span>Следующий показатель</span>
+          <h2>Скорость обслуживания — SOS</h2>
+          <p>Скорость — часть Гостевого опыта, но у неё есть отдельный показатель. SOS считается с момента, когда Гость получил чек, до выдачи последней позиции заказа. Отслеживай его в Brave&amp;Bold.</p>
+        </section>
+
+        <section class="sos-target fade-in"><div><span>Цель SOS</span><strong>3:10</strong><small>3 минуты 10 секунд</small></div><p>Цель скорости обслуживания по компании — 3 минуты 10 секунд. Ты влияешь на результат через расстановку, нужное количество заготовок, обратную связь и обучение команды.</p></section>
+
+        <figure class="report-figure fade-in">
+          <figcaption><span>Заглушка</span> SOS в Brave&amp;Bold</figcaption>
+          <div class="report-placeholder" role="img" aria-label="Заглушка для будущего изображения показателя SOS в Brave&amp;Bold"><span>Изображение будет обновлено</span><strong>Скорость обслуживания — SOS</strong><small>Здесь появится новый фрагмент Brave&amp;Bold</small></div>
+        </figure>
+
+        <section class="action-card fade-in">
+          <span class="action-icon" aria-hidden="true">?</span><p><strong>В обед SOS ухудшился, хотя людей на смене достаточно. Очередь накапливается только у выдачи, а кухня работает в обычном темпе.</strong> Какой план действий лучше?</p>
+          <div class="binary-choice" data-choice-group>
+            <button type="button" onclick="answerChoice(this, true, 'guest-metrics-feedback', 'Верно! Данные указывают на западающую зону: усили выдачу, проверь организацию процесса и затем снова оцени SOS.')">Временно усилить выдачу, проверить организацию на этой станции и проследить, изменился ли SOS</button>
+            <button type="button" onclick="answerChoice(this, false, 'guest-metrics-feedback', '', 'Кухня работает в обычном темпе, поэтому перенос сотрудника оттуда может создать вторую западающую зону. Сначала используй доступный ресурс и проверь процесс выдачи.')">Перевести сотрудника с кухни на выдачу, не меняя остальные роли</button>
+            <button type="button" onclick="answerChoice(this, false, 'guest-metrics-feedback', '', 'Людей на смене достаточно, а проблема локализована на выдаче. Сначала скорректируй расстановку и процесс, а не увеличивай общую численность.')">Сразу вызвать дополнительного сотрудника на всю оставшуюся смену</button>
+          </div>
+          <div class="feedback-box" id="guest-metrics-feedback" aria-live="polite"></div>
+        </section>
+        <section class="summary-card fade-in"><span class="eyebrow">Коротко о главном</span><h2>Про управление выручкой</h2><ul class="check-list"><li>Показатели помогают тебе понять, над чем нужно поработать, чтобы достичь целей по выручке.</li><li>Чтобы отслеживать цель по выручке, используй Brave&amp;Bold, а данные по получасовым продажам смотри в PLS.</li><li>Выручка складывается из количества заказов и их стоимости, поэтому ты отвечаешь за цели по трафику и среднему чеку.</li><li>Трафик растёт не только за счёт новых Гостей: хороший Гостевой опыт помогает постоянным Гостям возвращаться.</li><li>Чтобы увеличить средний чек, нужно продавать больше блюд или дорогих позиций.</li></ul></section>
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('income')">← Назад</button><button class="btn-next" type="button" onclick="navigateTo('costs')">Следующая глава →</button></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-costs">
+      <header class="chapter-hero chapter-red"><div class="chapter-hero-inner"><span class="chapter-index">03 / 06</span><h1>Виды затрат<br>ресторана</h1><p>FC, LC и расходы, которыми можно управлять</p></div></header>
+      <div class="content-wrap">
+        <section class="definition-card fade-in"><span>Затраты</span><p>Затраты — это средства, которые потратили на продукцию и ее производство, аренду, коммунальные услуги, зарплату сотрудникам и т.д.</p></section>
+        <section class="lesson-block fade-in">
+          <p>Директор видит все затраты ресторана в статьях ежемесячного отчета, который называется “P&amp;L”, или “Отчет о прибылях и убытках”.</p>
+          <p>В затраты ресторана входит несколько статей. Ты, как управляющий сменой, влияешь на некоторые из них:</p>
+          <ul class="cost-list"><li><strong>FC</strong><span>затраты на производство продукции (Food Cost, или FC);</span></li><li><strong>LC</strong><span>затраты на оплату труда сотрудников (Labor Cost, или LC);</span></li><li><strong>₽</strong><span>коммунальные расходы;</span></li><li><strong>↗</strong><span>расходы на различный ремонт (Прочие затраты).</span></li></ul>
+          <p>Сейчас подробнее поговорим про эти показатели.</p>
+        </section>
+
+        <section class="lesson-block fade-in"><h2>Food Cost</h2><p>Затраты на производство продукции (FC) делятся на прямые и прочие.</p><div class="compare-grid"><article class="metric-card"><span class="metric-label">Прямой FC</span><p>Прямой FC включает стоимость всего, что мы использовали, чтобы приготовить заказ. То есть стоимость продуктов для приготовления, упаковки и кондиментов.</p></article><article class="metric-card accent"><span class="metric-label">Прочий FC</span><p>Прочий FC учитывает списания, питание сотрудников, недостачи и излишки по итогам инвентаризации.</p></article></div></section>
+
+        <section class="exercise-card fade-in">
+          <h2>Раздели Food Cost</h2><p>Перетащи элементы в подходящую группу.</p>
+          <div class="drag-pool" id="idea-pool"><button type="button" class="drag-chip" id="fc-products" data-key="products">Продукты</button><button type="button" class="drag-chip" id="fc-writeoffs" data-key="writeoffs">Списания</button><button type="button" class="drag-chip" id="fc-packaging" data-key="packaging">Упаковка</button><button type="button" class="drag-chip" id="fc-meals" data-key="meals">Питание сотрудников</button><button type="button" class="drag-chip" id="fc-condiments" data-key="condiments">Кондименты</button><button type="button" class="drag-chip" id="fc-shortage" data-key="shortage">Недостачи и излишки</button></div>
+          <div class="drop-zones-row"><div class="drop-zone" id="zone-left"><strong>Прямой FC</strong><small>Перетащи сюда</small></div><div class="drop-zone" id="zone-right"><strong>Прочий FC</strong><small>Перетащи сюда</small></div></div>
+          <div class="exercise-actions"><button class="btn-check" type="button" onclick="checkZoneSort('zone-left','zone-right',['products','packaging','condiments'],['writeoffs','meals','shortage'],'cost-feedback')">Проверить</button><button class="btn-secondary" type="button" onclick="resetZonePool('idea-pool','zone-left','zone-right')">Сбросить</button></div><div class="feedback-box" id="cost-feedback" aria-live="polite"></div>
+        </section>
+
+        <section class="lesson-block fade-in"><h2>Labor Cost</h2><p>Затраты на оплату труда (LC) включают зарплаты, премии, отпуска и больничные ЧБРов и АУП ресторана.</p><p>ЧБРы получают почасовую оплату, поэтому ты влияешь на LC через отработанные часы: при необходимости отпускаешь сотрудников раньше или вызываешь дополнительных и контролируешь их отметки о приходе и уходе в Биосмарт.</p><p>Низкая комплектность и высокая текучесть также увеличивают LC.</p></section>
+
+        <section class="people-metrics fade-in" id="people-metrics"><article><div class="ring-metric"><strong>100%</strong><span>цель</span></div><h3>Комплектность</h3><p>Комплектность — соотношение фактического числа работающих сотрудников и количества, необходимого для плановой выручки.</p><p>Если показатель ниже, команда перегружена, а скорость, качество обслуживания и выручка могут снижаться.</p></article><article><div class="ring-metric danger"><strong>0%</strong><span>цель</span></div><h3>Текучесть</h3><p>Текучесть — соотношение уволенных сотрудников и тех, кто числится в ресторане в ставках.</p><p>Ты влияешь на неё через планирование нагрузки, общение, обратную связь, обучение и развитие команды.</p></article></section>
+
+        <section class="lesson-block fade-in"><h2>Коммунальные услуги и ремонт</h2><p>Затраты на коммунальные услуги и ремонт относятся к разным статьям “Отчета о прибылях и убытках”, но ты влияешь на них одинаково. Ты снижаешь все эти расходы, когда следишь, что сотрудники:</p><div class="eco-grid"><div><span>01</span>выключают свет в помещениях, где никого нет;</div><div><span>02</span>закрывают двери кулеров и фризеров;</div><div><span>03</span>бережно относятся к инвентарю и оборудованию;</div><div><span>04</span>включают оборудование только при необходимости.</div></div></section>
+        
+        <section class="lesson-block fade-in"><p>Контролируя Food Cost, Labor Cost и другие расходы, ты влияешь на прибыль ресторана. Дальше разберём, как она формируется.</p></section>
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('revenue')">← Назад</button><button class="btn-next" type="button" onclick="navigateTo('profit')">Следующая глава →</button></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-profit">
+      <header class="chapter-hero chapter-brown"><div class="chapter-hero-inner"><span class="chapter-index">04 / 06</span><h1>Основной показатель эффективности<br>работы ресторана</h1><p>Как выручка превращается в прибыль</p></div></header>
+      <div class="content-wrap">
+        <section class="definition-card profit-definition fade-in">
+          <span>Главный показатель эффективности ресторана</span>
+          <strong class="profit-keyword">Прибыль</strong>
+          <p>Сумма, которая остаётся после вычета всех расходов из доходов.</p>
+        </section>
+        <p class="fade-in">Есть три вида прибыли. На каждую из них твои решения на смене влияют по-разному.</p>
+        <section class="profit-stack fade-in" aria-label="Три вида прибыли">
+          <article><span>01</span><div><h2>Маржинальная прибыль</h2><p>Маржинальная прибыль, или маржа, — то, что остаётся от выручки после вычета Food Cost (FC): затрат на продукты, упаковку, кондименты и других производственных затрат. Маржу считают в рублях или процентах от выручки.</p><p class="management-impact">На смене ты влияешь на маржу, когда работаешь с выручкой и контролируешь использование продуктов, упаковки, списания и другие составляющие FC.</p></div></article>
+          <article><span>02</span><div><h2>Операционная прибыль</h2><p>Операционная прибыль — то, что остаётся от маржи после вычета Labor Cost (LC): зарплат, премий, отпусков и больничных сотрудников.</p><p class="management-impact">На смене ты влияешь на операционную прибыль через маржу и отработанные часы команды: корректируешь состав смены и контролируешь отметки в Биосмарт.</p></div></article>
+          <article><span>03</span><div><h2>EBITDA</h2><p>EBITDA — прибыль, которую получает ресторан после вычета из выручки затрат на производство продукции, зарплат сотрудников, аренды, маркетинговых и прочих затрат.</p><p class="management-impact">На смене ты влияешь на EBITDA, когда поддерживаешь выручку, контролируешь FC и LC, экономно используешь ресурсы и бережёшь оборудование.</p></div></article>
+        </section>
+        <section class="lesson-block fade-in"><p>На схеме показано, какие затраты последовательно вычитаются из выручки и какой вид прибыли остаётся на каждом этапе.</p></section>
+        <section class="profit-flow fade-in" id="profit-formulas" aria-label="Последовательная схема расчёта прибыли">
+          <div class="profit-flow-row">
+            <div class="profit-flow-card revenue"><strong>Выручка</strong><small>все доходы ресторана</small></div><span class="profit-operator">−</span><div class="profit-flow-card deduction"><strong>Food Cost</strong><small>затраты на производство</small></div><span class="profit-operator">=</span><div class="profit-flow-card margin"><strong>Маржа</strong><small>выручка минус FC</small></div>
+          </div>
+          <div class="profit-flow-row">
+            <div class="profit-flow-card margin"><strong>Маржа</strong><small>результат первого шага</small></div><span class="profit-operator">−</span><div class="profit-flow-card deduction"><strong>Labor Cost</strong><small>затраты на оплату труда</small></div><span class="profit-operator">=</span><div class="profit-flow-card operation"><strong>Операционная прибыль</strong><small>маржа минус LC</small></div>
+          </div>
+          <div class="profit-flow-row">
+            <div class="profit-flow-card operation"><strong>Операционная прибыль</strong><small>результат второго шага</small></div><span class="profit-operator">−</span><div class="profit-flow-card deduction"><strong>Другие расходы</strong><small>аренда и прочие затраты</small></div><span class="profit-operator">=</span><div class="profit-flow-card ebitda"><strong>EBITDA</strong><small>итог после всех вычетов</small></div>
+          </div>
+        </section>
+        <section class="exercise-card fade-in"><span class="eyebrow">Проверь логику</span><h2>Проследи, как формируются виды прибыли</h2><p>Нажимай на вычеты по порядку и смотри, какой вид прибыли получается на каждом этапе.</p><div class="profit-buttons"><button type="button" onclick="profitStep(1,this)">Вычесть FC</button><button type="button" onclick="profitStep(2,this)">Вычесть LC</button><button type="button" onclick="profitStep(3,this)">Вычесть аренду и прочие затраты</button></div><div id="profit-path" class="profit-path" aria-live="polite"></div><button class="btn-secondary" type="button" onclick="resetProfitPath()">Начать заново</button><div class="feedback-box" id="profit-feedback" aria-live="polite"></div></section>
+        <p class="fade-in">Как управляющий сменой, ты не отслеживаешь маржу, операционную прибыль и EBITDA напрямую, но решения каждой смены влияют на их итоговые значения в P&amp;L — отчёте о прибылях и убытках.</p>
+        
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('costs')">← Назад</button><button class="btn-next" type="button" onclick="navigateTo('productivity')">Следующая глава →</button></div>
+      </div>
+    </div>
+
+    <div class="page" id="page-productivity">
+      <header class="chapter-hero chapter-blue"><div class="chapter-hero-inner"><span class="chapter-index">05 / 06</span><h1>Производительность<br>труда</h1><p>ITPH показывает нагрузку команды</p></div></header>
+      <div class="content-wrap wide-content">
+        <section class="definition-card fade-in"><p>ITPH показывает, сколько проданных позиций приходится на один отработанный час команды.</p><p><strong>Где смотреть:</strong> в Brave&amp;Bold.</p></section>
+        <section class="formula-card fade-in"><span>Формула ITPH</span><div><strong>Количество проданных за период позиций</strong><i>÷</i><strong>Отработанные часы за период</strong></div></section>
+        <section class="exercise-card calc-card fade-in"><span class="eyebrow">Мини-задача</span><p>За 2 часа ресторан продал 126 позиций. За этот период команда отработала 6 часов. Рассчитай ITPH.</p><label for="itph-answer">Введи результат</label><div class="calc-row"><input id="itph-answer" inputmode="decimal" autocomplete="off" placeholder="ITPH"><button class="btn-check" type="button" onclick="checkItphAnswer()">Проверить</button></div><div class="feedback-box" id="itph-feedback" aria-live="polite"></div></section>
+        <section class="lesson-block fade-in"><p>В Brave&amp;Bold можно сравнить запланированный и фактический ITPH по часам работы ресторана.</p></section>
+        <figure class="report-figure fade-in">
+          <figcaption><span>Заглушка</span> Плановый и фактический ITPH</figcaption>
+          <div class="report-placeholder" role="img" aria-label="Заглушка для будущего изображения планового и фактического ITPH"><span>Изображение будет обновлено</span><strong>ITPH: план и факт по часам</strong><small>Здесь появится новый фрагмент Brave&amp;Bold</small></div>
+        </figure>
+        <aside class="impact-card itph-impact fade-in"><span>Связь с прибылью</span><strong>ITPH помогает удерживать баланс между загрузкой команды и затратами на труд.</strong><p>Если сотрудников больше, чем требует поток заказов, ресторан оплачивает лишние часы и увеличивает LC. Если людей недостаточно, команда перегружается, снижаются скорость и качество обслуживания, а вместе с ними могут снижаться Гостевой опыт, трафик и выручка.</p></aside>
+        <section class="exercise-card fade-in"><span class="eyebrow">Примени SEEF</span><h2>Как скорректировать расстановку?</h2><p>Во время пика на сборке заказов растёт очередь. Там работает новый сотрудник, а опытный сотрудник на менее загруженной станции завершил основные задачи. Как использовать SEEF?</p><div class="binary-choice" data-choice-group><button type="button" onclick="answerChoice(this, true, 'seef-recall-feedback', 'Верно! Расстановка должна учитывать текущую загрузку станций и навыки сотрудников: опытный сотрудник усиливает западающую зону, а новичок получает подходящую роль и поддержку.')">Перевести опытного сотрудника на сборку, а новичку дать подходящую задачу с учётом его навыков</button><button type="button" onclick="answerChoice(this, false, 'seef-recall-feedback', '', 'Фиксированная расстановка не учитывает изменившуюся загрузку. SEEF помогает вовремя перераспределять команду.')">Сохранить первоначальную расстановку до конца смены, чтобы не нарушать план</button><button type="button" onclick="answerChoice(this, false, 'seef-recall-feedback', '', 'Перевод всей команды может создать дефицит на других станциях. Нужно точечно усилить западающую зону с учётом навыков.')">Перевести на сборку всех свободных сотрудников независимо от их навыков</button></div><div class="feedback-box" id="seef-recall-feedback" aria-live="polite"></div></section>
+        <section class="lesson-block itph-management-intro fade-in"><h2>Как управлять нагрузкой на смене</h2><p>Используй ITPH и расстановку по SEEF, чтобы вовремя менять организацию работы команды.</p></section>
+        <section class="itph-actions fade-in" aria-label="Действия управляющего сменой"><article><h3>Расстановка по SEEF</h3><p>На самые загруженные станции ставь опытных и быстрых сотрудников.</p></article><article><h3>Усиление</h3><p>Добавляй помощь на станции, где нагрузка выше.</p></article><article><h3>Ротация</h3><p>Переводи сотрудников между станциями с учётом текущей загрузки.</p></article><article><h3>Перерывы</h3><p>Отпускай сотрудников на запланированные перерывы.</p></article><article><h3>Обучение</h3><p>Обучай на рабочем месте, чтобы гибко менять роли сотрудников по расстановке SEEF.</p></article></section>
+        <section class="lesson-block seef-materials fade-in"><h2>Материалы по SEEF</h2><p>Если нужно освежить правила расстановки, открой материалы в КингДом.</p><div class="seef-resource-grid"><a class="seef-resource-card" href="https://burgerking.daoffice.ru/net_home/Pages/rasstanovka_" target="_blank" rel="noopener"><span>SEEF</span><strong>Правила расстановки</strong><small>Открыть в КингДом ↗</small></a><a class="seef-resource-card" href="https://burgerking.daoffice.ru/net_home/Pages/rukovodstva_seef" target="_blank" rel="noopener"><span>↗</span><strong>Руководства по SEEF</strong><small>Открыть в КингДом ↗</small></a></div></section>
+        <aside class="pls-teaser itph-course-teaser fade-in" aria-label="Заглушка для ссылки на курс по ITPH"><span>Отдельный курс</span><div><h3>Подробнее об управлении ITPH</h3><p>Как анализировать нагрузку и выбирать действия для смены.</p></div><strong>Ссылка появится позже</strong></aside>
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('profit')">← Назад</button><button class="btn-next" type="button" onclick="navigateTo('summary')">Перейти к итогу →</button></div>
+      </div>
+    </div>
+    <div class="page" id="page-summary">
+      <header class="chapter-hero chapter-final"><div class="chapter-hero-inner"><span class="chapter-index">06 / 06</span><h1>Главное<br>по теме</h1><p>Соедини показатели в одну систему</p></div></header>
+      <div class="content-wrap">
+        <section class="summary-card fade-in"><span class="eyebrow">Финальный конспект</span><ul class="check-list large"><li>Анализируй показатели и следи, чтобы ресторан достигал поставленных целей. Не перегружай сотрудников.</li><li>Следи за динамикой показателей и их целевым значением в Brave&amp;Bold.</li><li>Все показатели, за которые ты отвечаешь, по-своему влияют на прибыль ресторана. Когда меняется один, изменятся и другие.</li><li>Когда ты выполняешь цель по выручке и контролируешь расходы на смене, ты влияешь на прибыль ресторана.</li></ul></section>
+        <section class="final-chain fade-in" aria-labelledby="final-chain-title">
+          <h2 id="final-chain-title">Что влияет на прибыль ресторана</h2>
+          <p class="final-chain-lead">Управляй двумя сторонами результата: помогай ресторану больше зарабатывать и контролируй затраты смены.</p>
+          <div class="final-chain-branches">
+            <article class="final-chain-branch guest-branch"><span>01 · Увеличивай выручку</span><strong class="branch-main">Трафик × средний чек = выручка</strong><p>Хороший Гостевой опыт помогает возвращать Гостей, а наполненность и стоимость блюд влияют на средний чек.</p></article>
+            <article class="final-chain-branch team-branch"><span>02 · Контролируй затраты</span><strong class="branch-main">FC + LC + другие расходы = затраты</strong><p>Следи за продуктами и списаниями, соотносись с загрузкой команды и экономно используй ресурсы.</p></article>
+          </div>
+          <div class="final-chain-result"><strong>Выручка</strong><span>−</span><strong>Затраты</strong><span>=</span><strong>Прибыль</strong></div>
+        </section>
+        <section class="exercise-card final-quiz fade-in"><span class="eyebrow">Финальная проверка</span><h2>Выбери верные связи</h2><p>Можно выбрать несколько вариантов. Оцени не отдельные определения, а влияние показателей друг на друга.</p><div class="select-grid" id="final-insights"><button type="button" aria-pressed="false" data-key="revenue" onclick="toggleInsight(this)">Выручка зависит от трафика и среднего чека</button><button type="button" aria-pressed="false" data-key="profit" onclick="toggleInsight(this)">Рост выручки влияет на прибыль, но итог также зависит от затрат</button><button type="button" aria-pressed="false" data-key="itph" onclick="toggleInsight(this)">ITPH помогает сопоставить объём продаж с отработанными часами команды</button><button type="button" aria-pressed="false" data-key="guest" onclick="toggleInsight(this)">Гостевой опыт может влиять на возвратность Гостей и трафик</button><button type="button" aria-pressed="false" data-key="fc" onclick="toggleInsight(this)">Контроль продуктов, упаковки и списаний помогает управлять Food Cost</button><button type="button" aria-pressed="false" data-key="wrong-itph" onclick="toggleInsight(this)">Чем выше ITPH, тем лучше в любой ситуации</button><button type="button" aria-pressed="false" data-key="wrong-labor" onclick="toggleInsight(this)">Сокращение команды всегда повышает прибыль, потому что снижает Labor Cost</button><button type="button" aria-pressed="false" data-key="wrong-check" onclick="toggleInsight(this)">Рост среднего чека гарантирует рост прибыли независимо от затрат</button></div><button class="btn-check" type="button" onclick="checkFinalInsights()">Проверить</button><div class="feedback-box" id="final-feedback" aria-live="polite"></div></section>
+        <section class="formula-download fade-in">
+          <span>Памятка</span>
+          <div><h2>Формулы показателей</h2><p>Выручка, средний чек, виды прибыли и ITPH — на одном листе.</p></div>
+          <a class="btn-next" href="assets/pamyatka-formuly.pdf" download>Скачать PDF</a>
+        </section>
+        <section class="completion-card fade-in"><span class="completion-ring">✓</span><h2 id="completion-title">Можно завершать</h2><p>Пройди финальный тест и нажми кнопку, чтобы сохранить результат в системе обучения.</p><button id="complete-course-button" class="btn-next" type="button" onclick="completeCourse()">Завершить</button><div id="completion-panel" class="completion-panel" role="status">Результат сохранён. Курс завершён.</div></section>
+        <div class="chapter-nav"><button class="btn-secondary" type="button" onclick="navigateTo('productivity')">← Назад</button><button class="btn-secondary" type="button" onclick="navigateTo('home')">К содержанию</button></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
