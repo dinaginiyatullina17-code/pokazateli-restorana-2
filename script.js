@@ -12,7 +12,7 @@ const CHAPTER_NAMES = {
   productivity:'Производительность труда', summary:'Главное по теме'
 };
 
-const PROGRESS_KEY = 'restaurant_metrics_2_progress_v3';
+const PROGRESS_KEY = 'restaurant_metrics_2_progress_v4';
 const PAGE_REQUIREMENTS = {
   income: ['income-feedback'],
   revenue: ['average-check-feedback', 'guest-metrics-feedback'],
@@ -128,7 +128,7 @@ function initFadeIn() {
   });
 }
 
-function collectState() { return {version:3, unlocked:unlockedChapters, completed:[...completedTests], attempts:testAttempts}; }
+function collectState() { return {version:4, unlocked:unlockedChapters, completed:[...completedTests], attempts:testAttempts}; }
 
 function saveProgress() {
   const json = JSON.stringify(collectState());
@@ -152,11 +152,11 @@ function loadProgress() {
   if (json) {
     try {
       const state = JSON.parse(json);
-      if (state.version === 3 && typeof state.unlocked === 'number') {
+      if (state.version === 4 && typeof state.unlocked === 'number') {
         unlockedChapters = Math.max(1, Math.min(state.unlocked, CHAPTER_ORDER.length));
       }
-      if (state.version === 3 && Array.isArray(state.completed)) completedTests = new Set(state.completed);
-      if (state.version === 3 && state.attempts && typeof state.attempts === 'object') testAttempts = state.attempts;
+      if (state.version === 4 && Array.isArray(state.completed)) completedTests = new Set(state.completed);
+      if (state.version === 4 && state.attempts && typeof state.attempts === 'object') testAttempts = state.attempts;
     } catch (_) {}
   }
   applyHomeLocks();
@@ -475,6 +475,20 @@ function completeCourse() {
 }
 
 document.addEventListener('DOMContentLoaded',() => {
+  const pageUrl = new URL(location.href);
+  if (pageUrl.searchParams.get('reset') === '1') {
+    try {
+      ['restaurant_metrics_2_progress','restaurant_metrics_2_progress_v2','restaurant_metrics_2_progress_v3','restaurant_metrics_2_progress_v4'].forEach(key => {
+        localStorage.removeItem(key);
+        localStorage.removeItem(key + '_completed');
+      });
+    } catch (_) {}
+    unlockedChapters = 1;
+    completedTests = new Set();
+    testAttempts = {};
+    pageUrl.searchParams.delete('reset');
+    history.replaceState({}, '', pageUrl);
+  }
   const previewPage = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
     ? new URLSearchParams(location.search).get('page')
     : null;
