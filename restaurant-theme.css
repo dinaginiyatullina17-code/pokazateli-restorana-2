@@ -581,7 +581,7 @@ input:focus-visible {
 }
 
 .report-image-compact {
-  width: min(100%, 680px);
+  width: min(100%, 540px);
   margin-inline: auto;
 }
 
@@ -599,8 +599,10 @@ input:focus-visible {
 }
 
 .report-image-wide {
-  width: 100%;
-  min-width: 760px;
+  width: 860px;
+  min-width: 860px;
+  max-width: none;
+  margin-inline: auto;
 }
 
 .fact-reveal,
