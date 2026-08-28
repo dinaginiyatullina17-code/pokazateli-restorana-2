@@ -119,11 +119,17 @@ input:focus-visible {
 
 .hero-placeholder {
   color: var(--ku-brand-on);
+  padding-left: clamp(1.5rem, 5vw, 5.5rem);
+  padding-right: clamp(1.5rem, 4vw, 4.5rem);
   background-color: #160d1c;
   background-image: url('assets/course-cover-v2.png');
-  background-position: center center;
-  background-size: cover;
+  background-position: right center;
+  background-size: auto 100%;
   background-repeat: no-repeat;
+}
+
+.hero-placeholder .hero-content {
+  max-width: 42rem;
 }
 
 .hero-placeholder::after {
@@ -1129,7 +1135,9 @@ input:focus-visible {
   }
 
   .hero-placeholder {
+    padding-inline: 1.25rem;
     background-position: 68% center;
+    background-size: auto 100%;
   }
 
   .hero-placeholder::after {
