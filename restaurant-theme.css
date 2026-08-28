@@ -571,6 +571,38 @@ input:focus-visible {
   background: var(--ku-grad-brand-soft);
 }
 
+.report-image {
+  display: block;
+  height: auto;
+  border: 1px solid var(--ku-border-soft);
+  border-radius: var(--ku-radius-l);
+  background: var(--ku-card);
+  box-shadow: var(--ku-shadow-xs);
+}
+
+.report-image-compact {
+  width: min(100%, 680px);
+  margin-inline: auto;
+}
+
+.report-image-scroll {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--ku-radius-l);
+  scrollbar-width: thin;
+  scrollbar-color: var(--ku-brand) var(--ku-border-soft);
+}
+
+.report-image-scroll:focus-visible {
+  outline: 3px solid var(--ku-brand-ring);
+  outline-offset: 4px;
+}
+
+.report-image-wide {
+  width: 100%;
+  min-width: 760px;
+}
+
 .fact-reveal,
 .report-scroll,
 .table-scroll {
