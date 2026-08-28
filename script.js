@@ -12,7 +12,7 @@ const CHAPTER_NAMES = {
   productivity:'Производительность труда', summary:'Главное по теме'
 };
 
-const PROGRESS_KEY = 'restaurant_metrics_2_progress_v2';
+const PROGRESS_KEY = 'restaurant_metrics_2_progress_v3';
 const PAGE_REQUIREMENTS = {
   income: ['income-feedback'],
   revenue: ['average-check-feedback', 'guest-metrics-feedback'],
@@ -21,9 +21,20 @@ const PAGE_REQUIREMENTS = {
   productivity: ['itph-feedback', 'seef-recall-feedback'],
   summary: ['final-feedback']
 };
+const TEST_ANSWERS = {
+  'income-feedback': 'Сравни динамику продаж с целью, определи причину отклонения и задай команде конкретный фокус на оставшееся время.',
+  'average-check-feedback': 'При стабильном трафике сначала проверь наполненность и стоимость блюд в заказе, а затем скорректируй фокус продаж.',
+  'guest-metrics-feedback': 'Временно усиль выдачу доступным сотрудником, проверь организацию работы на станции и снова оцени SOS.',
+  'cost-feedback': 'К прямому Food Cost относятся продукты, упаковка и приправы; к прочему — списания, питание сотрудников и недостачи.',
+  'profit-feedback': 'Вычеты идут по порядку: FC, затем LC, затем аренда и прочие затраты.',
+  'itph-feedback': 'Правильный расчёт: 126 проданных позиций ÷ 6 отработанных часов = 21.',
+  'seef-recall-feedback': 'Опытный сотрудник усиливает сборку, а новичок получает подходящую задачу с учётом его навыков.',
+  'final-feedback': 'Верные связи: выручка зависит от трафика и среднего чека; прибыль — от выручки и затрат; ITPH связывает продажи с часами команды; Гостевой опыт влияет на возвратность; контроль продуктов, упаковки и списаний помогает управлять Food Cost.'
+};
 let currentPage = 'home';
 let unlockedChapters = 1;
 let completedTests = new Set();
+let testAttempts = {};
 let noticeTimer = null;
 
 function missingTests(pageId) {
@@ -117,7 +128,7 @@ function initFadeIn() {
   });
 }
 
-function collectState() { return {unlocked:unlockedChapters, completed:[...completedTests]}; }
+function collectState() { return {version:3, unlocked:unlockedChapters, completed:[...completedTests], attempts:testAttempts}; }
 
 function saveProgress() {
   const json = JSON.stringify(collectState());
@@ -141,13 +152,15 @@ function loadProgress() {
   if (json) {
     try {
       const state = JSON.parse(json);
-      if (typeof state.unlocked === 'number') {
+      if (state.version === 3 && typeof state.unlocked === 'number') {
         unlockedChapters = Math.max(1, Math.min(state.unlocked, CHAPTER_ORDER.length));
       }
-      if (Array.isArray(state.completed)) completedTests = new Set(state.completed);
+      if (state.version === 3 && Array.isArray(state.completed)) completedTests = new Set(state.completed);
+      if (state.version === 3 && state.attempts && typeof state.attempts === 'object') testAttempts = state.attempts;
     } catch (_) {}
   }
   applyHomeLocks();
+  restoreTestStates();
 }
 
 function applyHomeLocks() {
@@ -160,16 +173,82 @@ function applyHomeLocks() {
   });
 }
 
+function testIds() {
+  return [...new Set(Object.values(PAGE_REQUIREMENTS).flat())];
+}
+
+function initAttemptNotes() {
+  testIds().forEach(id => {
+    const box = document.getElementById(id);
+    if (!box || document.getElementById(id + '-attempts')) return;
+    const note = document.createElement('p');
+    note.id = id + '-attempts';
+    note.className = 'attempt-note';
+    box.before(note);
+  });
+  restoreTestStates();
+}
+
+function updateAttemptNote(id) {
+  const note = document.getElementById(id + '-attempts');
+  if (!note) return;
+  if (completedTests.has(id)) {
+    note.textContent = 'Тест завершён';
+    note.classList.add('completed');
+    return;
+  }
+  const remaining = Math.max(0, 2 - Number(testAttempts[id] || 0));
+  note.textContent = remaining === 2 ? 'У тебя 2 попытки' : `Осталась ${remaining} попытка`;
+  note.classList.remove('completed');
+}
+
+function lockTest(id) {
+  const box = document.getElementById(id);
+  const test = box?.closest('.exercise-card, .action-card');
+  if (!test) return;
+  test.classList.add('test-completed');
+  test.querySelectorAll('button, input').forEach(control => { control.disabled = true; });
+}
+
+function restoreTestStates() {
+  testIds().forEach(id => {
+    updateAttemptNote(id);
+    if (completedTests.has(id)) lockTest(id);
+  });
+}
+
 function showFeedback(id, ok, goodText, badText) {
   const box = document.getElementById(id);
   if (!box) return;
-  box.className = `feedback-box show ${ok ? 'correct' : 'incorrect'}`;
-  box.innerHTML = `<strong>${ok ? goodText : badText}</strong>`;
-  if (ok) {
-    completedTests.add(id);
-    unlockNextChapterIfReady(currentPage);
-    saveProgress();
+  const tracked = Object.prototype.hasOwnProperty.call(TEST_ANSWERS, id);
+  if (tracked && completedTests.has(id)) return;
+
+  if (!tracked) {
+    box.className = `feedback-box show ${ok ? 'correct' : 'incorrect'}`;
+    box.innerHTML = `<strong>${ok ? goodText : badText}</strong>`;
+    return;
   }
+
+  if (ok) {
+    box.className = 'feedback-box show correct';
+    box.innerHTML = `<strong>${goodText}</strong>`;
+    completedTests.add(id);
+    lockTest(id);
+  } else {
+    const attempt = Math.min(2, Number(testAttempts[id] || 0) + 1);
+    testAttempts[id] = attempt;
+    box.className = 'feedback-box show incorrect';
+    if (attempt < 2) {
+      box.innerHTML = `<strong>Подсказка:</strong> ${badText}<span class="attempt-feedback">Попробуй ещё раз.</span>`;
+    } else {
+      box.innerHTML = `<strong>Разбор:</strong> ${badText}<span class="attempt-feedback"><b>Правильное решение:</b> ${TEST_ANSWERS[id]}</span>`;
+      completedTests.add(id);
+      lockTest(id);
+    }
+  }
+  updateAttemptNote(id);
+  unlockNextChapterIfReady(currentPage);
+  saveProgress();
 }
 
 function answerChoice(button, isCorrect, feedbackId, successText, errorText) {
@@ -404,6 +483,7 @@ document.addEventListener('DOMContentLoaded',() => {
   const previewFocus = previewPage ? new URLSearchParams(location.search).get('focus') : null;
   if (previewFocus) setTimeout(() => document.getElementById(previewFocus)?.scrollIntoView({behavior:'instant', block:'start'}), 120);
   applyHomeLocks();
+  initAttemptNotes();
   initSortable();
   initZoneSort('idea-pool','zone-left','zone-right');
   shuffleChildren(document.getElementById('idea-pool'));
