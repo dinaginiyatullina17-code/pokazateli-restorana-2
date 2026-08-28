@@ -136,6 +136,21 @@ input:focus-visible {
     linear-gradient(0deg, rgba(16, 7, 20, .34), transparent 46%);
 }
 
+.hero-placeholder .hero-content h1 {
+  color: #ffffff;
+  text-shadow: 0 4px 28px rgba(8, 3, 12, .72);
+}
+
+.hero-placeholder .hero-content p {
+  color: rgba(255, 255, 255, .92);
+  text-shadow: 0 2px 16px rgba(8, 3, 12, .7);
+}
+
+.hero-placeholder .hero-content .eyebrow.light {
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(8, 3, 12, .72);
+}
+
 .hero-grain {
   opacity: .12;
 }
