@@ -425,6 +425,25 @@ input:focus-visible {
   background: var(--ku-card);
 }
 
+.course-note-text {
+  margin: var(--ku-space-s) 0 var(--ku-space-m);
+  color: var(--ku-text-muted);
+}
+
+.course-note-text p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.course-note-text strong {
+  color: var(--ku-text);
+}
+
+.financial-revenue-card {
+  width: 100%;
+}
+
 .cost-list li,
 .people-metrics article,
 .itph-actions article {

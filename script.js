@@ -177,7 +177,7 @@ function answerChoice(button, isCorrect, feedbackId, successText, errorText) {
   if (!group) return;
   group.querySelectorAll('button').forEach(item => item.classList.remove('correct-pick','wrong-pick'));
   button.classList.add(isCorrect ? 'correct-pick' : 'wrong-pick');
-  showFeedback(feedbackId, isCorrect, successText, errorText || 'Посмотри внимательнее на разницу между финансовой и оперативной целью.');
+  showFeedback(feedbackId, isCorrect, successText, errorText || 'Посмотри внимательнее на связь показателя с целью по выручке.');
 }
 
 /* Сортировка управленческого цикла */
