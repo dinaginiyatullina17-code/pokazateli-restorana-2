@@ -25,7 +25,7 @@ const TEST_ANSWERS = {
   'income-feedback': 'Сравни динамику продаж с целью, определи причину отклонения и задай команде конкретный фокус на оставшееся время.',
   'average-check-feedback': 'При стабильном трафике сначала проверь наполненность и стоимость блюд в заказе, а затем скорректируй фокус продаж.',
   'guest-metrics-feedback': 'Временно усиль выдачу доступным сотрудником, проверь организацию работы на станции и снова оцени SOS.',
-  'cost-feedback': 'К прямому Food Cost относятся продукты, упаковка и приправы; к прочему — списания, питание сотрудников и недостачи.',
+  'cost-feedback': 'К прямому Food Cost относятся продукты и упаковка; к прочему — списания, питание сотрудников, недостачи и излишки.',
   'profit-feedback': 'Вычеты идут по порядку: FC, затем LC, затем аренда и прочие затраты.',
   'itph-feedback': 'Правильный расчёт: 126 проданных позиций ÷ 6 отработанных часов = 21.',
   'seef-recall-feedback': 'Опытный сотрудник усиливает сборку, а новичок получает подходящую задачу с учётом его навыков.',
@@ -207,7 +207,7 @@ function lockTest(id) {
   const test = box?.closest('.exercise-card, .action-card');
   if (!test) return;
   test.classList.add('test-completed');
-  test.querySelectorAll('button, input').forEach(control => { control.disabled = true; });
+  test.querySelectorAll('button:not([data-keep-enabled]), input').forEach(control => { control.disabled = true; });
 }
 
 function restoreTestStates() {
@@ -420,20 +420,42 @@ const PROFIT_TEXT = {
 };
 function profitStep(step,button) {
   if (step !== expectedProfitStep) {
-    showFeedback('profit-feedback',false,'','Сначала вычти предыдущую статью затрат.');
+    if (completedTests.has('profit-feedback')) {
+      const feedback = document.getElementById('profit-feedback');
+      if (feedback) {
+        feedback.className = 'feedback-box show incorrect';
+        feedback.innerHTML = '<strong>Подсказка:</strong> сначала вычти предыдущую статью затрат.';
+      }
+    } else {
+      showFeedback('profit-feedback',false,'','Сначала вычти предыдущую статью затрат.');
+    }
     return;
   }
   button.classList.add('done'); button.disabled = true;
   const chip = document.createElement('span'); chip.textContent = PROFIT_TEXT[step];
   document.getElementById('profit-path')?.appendChild(chip);
   expectedProfitStep += 1;
-  if (expectedProfitStep === 4) showFeedback('profit-feedback',true,'Верно! Ты дошёл от выручки до EBITDA.','');
+  if (expectedProfitStep === 4) {
+    if (completedTests.has('profit-feedback')) {
+      const feedback = document.getElementById('profit-feedback');
+      if (feedback) {
+        feedback.className = 'feedback-box show correct';
+        feedback.innerHTML = '<strong>Верно! Ты снова дошёл от выручки до EBITDA.</strong>';
+      }
+    } else {
+      showFeedback('profit-feedback',true,'Верно! Ты дошёл от выручки до EBITDA.','');
+    }
+  }
 }
 function resetProfitPath() {
   expectedProfitStep = 1;
   const path = document.getElementById('profit-path'); if (path) path.innerHTML = '';
   document.querySelectorAll('.profit-buttons button').forEach(button => { button.disabled = false; button.classList.remove('done'); });
-  const feedback = document.getElementById('profit-feedback'); if (feedback) feedback.className = 'feedback-box';
+  const feedback = document.getElementById('profit-feedback');
+  if (feedback) {
+    feedback.className = 'feedback-box';
+    feedback.innerHTML = '';
+  }
 }
 
 function checkItphAnswer() {
