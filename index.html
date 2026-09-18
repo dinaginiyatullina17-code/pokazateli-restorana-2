@@ -7,7 +7,7 @@
   <meta name="description" content="Интерактивный курс для менеджеров смены о выручке, затратах, прибыли и производительности ресторана.">
   <title>Показатели ресторана</title>
   <link rel="stylesheet" href="css/kuds.css?v=20260828-10">
-  <link rel="stylesheet" href="style.css?v=20260828-10">
+  <link rel="stylesheet" href="style.css?v=20260918-1">
   <link rel="stylesheet" href="restaurant-theme.css?v=20260828-10">
   <style>
     html, body { margin: 0 !important; padding: 0 !important; }
@@ -354,7 +354,40 @@
           </div>
           <div class="final-chain-result"><strong>Выручка</strong><span>−</span><strong>Затраты</strong><span>=</span><strong>Прибыль</strong></div>
         </section>
-        <section class="exercise-card final-quiz fade-in"><span class="eyebrow">Финальная проверка</span><h2>Выбери верные связи</h2><p>Можно выбрать несколько вариантов. Оцени не отдельные определения, а влияние показателей друг на друга.</p><div class="select-grid" id="final-insights"><button type="button" aria-pressed="false" data-key="revenue" onclick="toggleInsight(this)">Выручка зависит от трафика и среднего чека</button><button type="button" aria-pressed="false" data-key="profit" onclick="toggleInsight(this)">Рост выручки влияет на прибыль, но итог также зависит от затрат</button><button type="button" aria-pressed="false" data-key="itph" onclick="toggleInsight(this)">ITPH помогает сопоставить объём продаж с отработанными часами команды</button><button type="button" aria-pressed="false" data-key="guest" onclick="toggleInsight(this)">Гостевой опыт может влиять на возвратность Гостей и трафик</button><button type="button" aria-pressed="false" data-key="fc" onclick="toggleInsight(this)">Контроль продуктов, упаковки и списаний помогает управлять Food Cost</button><button type="button" aria-pressed="false" data-key="wrong-itph" onclick="toggleInsight(this)">Чем выше ITPH, тем лучше в любой ситуации</button><button type="button" aria-pressed="false" data-key="wrong-labor" onclick="toggleInsight(this)">Сокращение команды всегда повышает прибыль, потому что снижает Labor Cost</button><button type="button" aria-pressed="false" data-key="wrong-check" onclick="toggleInsight(this)">Рост среднего чека гарантирует рост прибыли независимо от затрат</button></div><button class="btn-check" type="button" onclick="checkFinalInsights()">Проверить</button><div class="feedback-box" id="final-feedback" aria-live="polite"></div></section>
+        <section class="exercise-card final-quiz fade-in">
+          <span class="eyebrow">Финальная проверка</span>
+          <h2>Какой вывод следует из ситуации?</h2>
+          <p>Для каждой ситуации выбери подходящий вывод или первое действие управляющего сменой.</p>
+          <div class="final-match" id="final-links">
+            <article class="final-match-row">
+              <div class="final-match-situation"><span>01 · Ситуация</span><strong>Трафик не изменился, а выручка снизилась.</strong></div>
+              <span class="final-match-arrow" aria-hidden="true">→</span>
+              <label><span>Вывод или действие</span><select data-answer="average-check"><option value="">Выбери вариант</option><option value="food-cost">Проверь причины перерасхода продуктов, упаковки и списаний.</option><option value="average-check">Сначала проверь средний чек: наполненность и стоимость блюд в заказе.</option><option value="profit">Проверь затраты: рост продаж сам по себе не гарантирует рост прибыли.</option><option value="guest">Разбери причины жалоб: Гостевой опыт влияет на желание Гостей вернуться.</option><option value="team">Сопоставь нагрузку с часами команды и скорректируй расстановку.</option></select></label>
+            </article>
+            <article class="final-match-row">
+              <div class="final-match-situation"><span>02 · Ситуация</span><strong>Продажи выросли, но прибыль не увеличилась.</strong></div>
+              <span class="final-match-arrow" aria-hidden="true">→</span>
+              <label><span>Вывод или действие</span><select data-answer="profit"><option value="">Выбери вариант</option><option value="food-cost">Проверь причины перерасхода продуктов, упаковки и списаний.</option><option value="average-check">Сначала проверь средний чек: наполненность и стоимость блюд в заказе.</option><option value="profit">Проверь затраты: рост продаж сам по себе не гарантирует рост прибыли.</option><option value="guest">Разбери причины жалоб: Гостевой опыт влияет на желание Гостей вернуться.</option><option value="team">Сопоставь нагрузку с часами команды и скорректируй расстановку.</option></select></label>
+            </article>
+            <article class="final-match-row">
+              <div class="final-match-situation"><span>03 · Ситуация</span><strong>На сборке растёт очередь, команда не успевает.</strong></div>
+              <span class="final-match-arrow" aria-hidden="true">→</span>
+              <label><span>Вывод или действие</span><select data-answer="team"><option value="">Выбери вариант</option><option value="food-cost">Проверь причины перерасхода продуктов, упаковки и списаний.</option><option value="average-check">Сначала проверь средний чек: наполненность и стоимость блюд в заказе.</option><option value="profit">Проверь затраты: рост продаж сам по себе не гарантирует рост прибыли.</option><option value="guest">Разбери причины жалоб: Гостевой опыт влияет на желание Гостей вернуться.</option><option value="team">Сопоставь нагрузку с часами команды и скорректируй расстановку.</option></select></label>
+            </article>
+            <article class="final-match-row">
+              <div class="final-match-situation"><span>04 · Ситуация</span><strong>Гости жалуются на обслуживание и реже возвращаются.</strong></div>
+              <span class="final-match-arrow" aria-hidden="true">→</span>
+              <label><span>Вывод или действие</span><select data-answer="guest"><option value="">Выбери вариант</option><option value="food-cost">Проверь причины перерасхода продуктов, упаковки и списаний.</option><option value="average-check">Сначала проверь средний чек: наполненность и стоимость блюд в заказе.</option><option value="profit">Проверь затраты: рост продаж сам по себе не гарантирует рост прибыли.</option><option value="guest">Разбери причины жалоб: Гостевой опыт влияет на желание Гостей вернуться.</option><option value="team">Сопоставь нагрузку с часами команды и скорректируй расстановку.</option></select></label>
+            </article>
+            <article class="final-match-row">
+              <div class="final-match-situation"><span>05 · Ситуация</span><strong>Растут списания и расход упаковки.</strong></div>
+              <span class="final-match-arrow" aria-hidden="true">→</span>
+              <label><span>Вывод или действие</span><select data-answer="food-cost"><option value="">Выбери вариант</option><option value="food-cost">Проверь причины перерасхода продуктов, упаковки и списаний.</option><option value="average-check">Сначала проверь средний чек: наполненность и стоимость блюд в заказе.</option><option value="profit">Проверь затраты: рост продаж сам по себе не гарантирует рост прибыли.</option><option value="guest">Разбери причины жалоб: Гостевой опыт влияет на желание Гостей вернуться.</option><option value="team">Сопоставь нагрузку с часами команды и скорректируй расстановку.</option></select></label>
+            </article>
+          </div>
+          <button class="btn-check" type="button" onclick="checkFinalLinks()">Проверить связи</button>
+          <div class="feedback-box" id="final-feedback" aria-live="polite"></div>
+        </section>
         <section class="formula-download fade-in">
           <span>Памятка</span>
           <div><h2>Формулы показателей</h2><p>Выручка, средний чек, виды прибыли и ITPH — на одном листе.</p></div>
@@ -366,6 +399,6 @@
     </div>
   </main>
 
-  <script src="script.js?v=20260828-7"></script>
+  <script src="script.js?v=20260918-1"></script>
 </body>
 </html>

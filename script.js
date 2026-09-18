@@ -29,7 +29,7 @@ const TEST_ANSWERS = {
   'profit-feedback': 'Вычеты идут по порядку: FC, затем LC, затем аренда и прочие затраты.',
   'itph-feedback': 'Правильный расчёт: 126 проданных позиций ÷ 6 отработанных часов = 21.',
   'seef-recall-feedback': 'Опытный сотрудник усиливает сборку, а новичок получает подходящую задачу с учётом его навыков.',
-  'final-feedback': 'Верные связи: выручка зависит от трафика и среднего чека; прибыль — от выручки и затрат; ITPH связывает продажи с часами команды; Гостевой опыт влияет на возвратность; контроль продуктов, упаковки и списаний помогает управлять Food Cost.'
+  'final-feedback': 'Если трафик не изменился, а выручка снизилась — проверь средний чек. Если продажи растут без роста прибыли — проверь затраты. При очереди сопоставь нагрузку с часами команды и скорректируй расстановку. Жалобы могут снижать возвратность Гостей. Списания и перерасход упаковки влияют на Food Cost.'
 };
 let currentPage = 'home';
 let unlockedChapters = 1;
@@ -207,7 +207,7 @@ function lockTest(id) {
   const test = box?.closest('.exercise-card, .action-card');
   if (!test) return;
   test.classList.add('test-completed');
-  test.querySelectorAll('button:not([data-keep-enabled]), input').forEach(control => { control.disabled = true; });
+  test.querySelectorAll('button:not([data-keep-enabled]), input, select').forEach(control => { control.disabled = true; });
 }
 
 function restoreTestStates() {
@@ -464,13 +464,16 @@ function checkItphAnswer() {
   showFeedback('itph-feedback',Number.isFinite(value) && Math.abs(value - 21) < .01,'Верно! 126 ÷ 6 = 21.','Раздели 126 проданных позиций на 6 отработанных часов.');
 }
 
-function toggleInsight(button) {
-  button.setAttribute('aria-pressed',String(button.getAttribute('aria-pressed') !== 'true'));
-}
-function checkFinalInsights() {
-  const selected = [...document.querySelectorAll('#final-insights [aria-pressed="true"]')].map(button => button.dataset.key);
-  const expected = ['revenue','profit','itph','guest','fc'];
-  showFeedback('final-feedback',setEq(selected,expected),'Верно! Ты связал выручку, Гостевой опыт, загрузку команды, затраты и прибыль в одну систему.','Проверь выбор ещё раз: абсолютные формулировки «всегда», «в любой ситуации» и «независимо от затрат» не учитывают баланс показателей.');
+function checkFinalLinks() {
+  const selects = [...document.querySelectorAll('#final-links select')];
+  const allFilled = selects.every(select => select.value);
+  const allCorrect = allFilled && selects.every(select => select.value === select.dataset.answer);
+  const values = selects.map(select => select.value).filter(Boolean);
+  const unique = new Set(values).size === values.length;
+  let hint = 'Сопоставь, какой показатель изменился в каждой ситуации, и выбери связанный с ним вывод.';
+  if (!allFilled) hint = 'Выбери вывод или действие для каждой из пяти ситуаций.';
+  else if (!unique) hint = 'Каждый вывод используется один раз. Проверь строки, где выбран одинаковый вариант.';
+  showFeedback('final-feedback',allCorrect,'Верно! Для каждой ситуации ты выбрал связанный с ней показатель и подходящее действие.',hint);
 }
 
 function completeCourse() {
